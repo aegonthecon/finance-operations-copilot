@@ -11,12 +11,12 @@ class InvoiceUploadResponse(BaseModel):
     invoice_id: int
 
 class InvoiceExtractResponse(BaseModel):
-    invoice_number: str
-    vendor_name: str
-    invoice_date: date
-    due_date: date
-    amount: float
-    currency: str
+    invoice_number: Optional[str] = None
+    vendor_name: Optional[str] = None
+    invoice_date: Optional[date] = None
+    due_date: Optional[date] = None
+    amount: Optional[float] = None
+    currency: Optional[str] = None
 
 class VendorClassificationResponse(BaseModel):
     category: str

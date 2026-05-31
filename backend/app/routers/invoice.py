@@ -13,9 +13,23 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from .. import models, schemas
 from ..utils import gemini_vision, vendor_classify, priority  # priority utility will be created later
-from datetime import date
+from datetime import date, datetime
 
 router = APIRouter()
+
+def parse_date(value):
+    if not value:
+        return None
+
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        pass
+
+    try:
+        return datetime.strptime(value, "%d %B %Y").date()
+    except ValueError:
+        return None
 
 UPLOAD_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../uploads"))
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -46,8 +60,8 @@ def extract_invoice(invoice_id: int, db: Session = Depends(get_db)):
         # Parse ISO date strings to Python date objects for SQLite
         inv_date_str = data.get("invoice_date")
         due_date_str = data.get("due_date")
-        invoice.invoice_date = date.fromisoformat(inv_date_str) if inv_date_str else None
-        invoice.due_date = date.fromisoformat(due_date_str) if due_date_str else None
+        invoice.invoice_date = parse_date(inv_date_str)
+        invoice.due_date = parse_date(due_date_str)
         invoice.amount = data.get("amount")
         invoice.currency = data.get("currency")
         db.commit()
