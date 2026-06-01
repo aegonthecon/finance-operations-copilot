@@ -1,0 +1,35 @@
+[
+  {
+    "invoice_number": "INV-1024",
+    "vendor_name": "Apoorva Delicacies",
+    "invoice_date": "2026-05-10",
+    "due_date": "2026-06-09",
+    "amount": 635.0,
+    "currency": "INR",
+    "category": "Meals & Entertainment",
+    "priority_score": 0.45,
+    "duplicate_risk": 0.1
+  },
+  {
+    "invoice_number": "INV-5892",
+    "vendor_name": "AWS",
+    "invoice_date": "2026-05-01",
+    "due_date": "2026-05-31",
+    "amount": 12500.0,
+    "currency": "USD",
+    "category": "Software",
+    "priority_score": 0.95,
+    "duplicate_risk": 0.1
+  },
+  {
+    "invoice_number": "INV-3341",
+    "vendor_name": "WeWork",
+    "invoice_date": "2026-05-15",
+    "due_date": "2026-06-15",
+    "amount": 8500.0,
+    "currency": "USD",
+    "category": "Infrastructure",
+    "priority_score": 0.65,
+    "duplicate_risk": 0.8
+  }
+]

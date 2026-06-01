@@ -1,0 +1,17 @@
+[
+  {
+    "customer": "Acme Corp",
+    "amount_due": 4500.0,
+    "days_overdue": 45
+  },
+  {
+    "customer": "Globex",
+    "amount_due": 12000.0,
+    "days_overdue": 15
+  },
+  {
+    "customer": "Initech",
+    "amount_due": 550.0,
+    "days_overdue": -5
+  }
+]

@@ -6,6 +6,7 @@ import InvoiceUpload from "./components/InvoiceUpload";
 import PaymentPriorities from "./components/PaymentPriorities";
 import ReceivablesDashboard from "./components/ReceivablesDashboard";
 import EmailGenerator from "./components/EmailGenerator";
+import VendorAnalytics from "./components/VendorAnalytics";
 
 const linkClass = "px-4 py-2 text-gray-200 hover:text-teal-300";
 
@@ -18,6 +19,7 @@ export default function App() {
           <NavLink to="/upload" className={({ isActive }) => isActive ? "font-bold " + linkClass : linkClass}>Invoice Upload</NavLink>
           <NavLink to="/priorities" className={({ isActive }) => isActive ? "font-bold " + linkClass : linkClass}>Payment Priorities</NavLink>
           <NavLink to="/receivables" className={({ isActive }) => isActive ? "font-bold " + linkClass : linkClass}>Receivables</NavLink>
+          <NavLink to="/vendors" className={({ isActive }) => isActive ? "font-bold " + linkClass : linkClass}>Vendors</NavLink>
           <NavLink to="/email" className={({ isActive }) => isActive ? "font-bold " + linkClass : linkClass}>Email Generator</NavLink>
         </nav>
       </header>
@@ -27,6 +29,7 @@ export default function App() {
           <Route path="/upload" element={<InvoiceUpload />} />
           <Route path="/priorities" element={<PaymentPriorities />} />
           <Route path="/receivables" element={<ReceivablesDashboard />} />
+          <Route path="/vendors" element={<VendorAnalytics />} />
           <Route path="/email" element={<EmailGenerator />} />
         </Routes>
       </main>

@@ -18,7 +18,11 @@ class Invoice(Base):
     vendor_category = Column(String, nullable=True)
     vendor_reasoning = Column(String, nullable=True)
     priority_score = Column(Float, nullable=True)
+    priority_reasoning = Column(String, nullable=True)
     duplicate_flag = Column(Boolean, default=False)
+    duplicate_risk = Column(Float, nullable=True)
+    duplicate_reasoning = Column(String, nullable=True)
+    recommended_action = Column(String, nullable=True)
 
 class Receivable(Base):
     __tablename__ = "receivables"
@@ -27,4 +31,6 @@ class Receivable(Base):
     amount_due = Column(Float, nullable=False)
     days_overdue = Column(Integer, nullable=False)
     priority_score = Column(Float, nullable=True)
+    customer_risk = Column(String, nullable=True)
+    follow_up_recommendation = Column(String, nullable=True)
     email_draft = Column(String, nullable=True)

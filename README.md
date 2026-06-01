@@ -1,30 +1,28 @@
-# README.md
-
-## Finance Operations Copilot
+# Finance Operations Copilot
 
 **A premium AI‑powered assistant for finance teams** that automates invoice extraction, vendor classification, priority scoring, receivable management, and AI‑generated email reminders.
 
 ---
 
-### Project Overview
+## Project Overview
 
-The application provides a **single‑screen workflow**:
-1. Upload an invoice image or PDF.
-2. Extract key fields using Google Gemini Vision (or a deterministic fallback).
-3. Classify the vendor and obtain reasoning.
-4. Compute a priority score and recommendation.
-5. Store receivables, generate email drafts, and expose a clean REST API.
+The application provides a comprehensive end-to-end finance operations workflow:
+1. **Dashboard & Cash Flow:** Track total payables, cash flow impact, and overdue liabilities.
+2. **Invoice Intelligence:** Upload an invoice image. Extract key fields and classify vendors using Google Gemini Vision.
+3. **Priority & Duplicates:** Compute an AI-first priority score and flag potential duplicate invoices.
+4. **Vendor Analytics:** Analyze vendor spend, categories, and risks across your supply chain.
+5. **Accounts Receivable:** Track AR aging, assign risk levels, and automatically draft contextual follow-up emails via Gemini AI.
 
-All components are **container‑ready**, written in modern FastAPI and React with a polished UI.
+All components are **container‑ready**, written in modern FastAPI and React with a polished UI, and charted using Recharts.
 
 ---
 
-### Architecture
+## Architecture (Local Prototype)
 
 ```mermaid
 flowchart TD
     subgraph Frontend["React UI"]
-        UI["InvoiceUpload + Dashboard"]
+        UI["Dashboard, AR, Vendors"]
         UI -->|GET/POST| API["FastAPI Backend"]
     end
     subgraph Backend["FastAPI Backend"]
@@ -38,32 +36,33 @@ flowchart TD
     style Backend fill:#E0F7FA,stroke:#2563EB,stroke-width:2px
 ```
 
----
-
-### Features
-
-- **Invoice OCR** (Google Gemini Vision) with deterministic mock fallback.
-- **Vendor classification** using Gemini AI.
-- **Priority scoring** and actionable recommendation.
-- **Receivable workflow** – upload CSV, query priority, generate reminder emails.
-- **AI email generation** (Gemini) for payment reminders.
-- **Full API** – health, invoice, receivable, email endpoints.
-- **Responsive UI** – glass‑morphism cards, status badges, loading states, empty states.
+*Note: For enterprise scale capabilities, please see [Architecture.md](./Architecture.md).*
 
 ---
 
-### Tech Stack
+## Features
+
+- **Finance Dashboard:** Key metrics, 30-day cash flow Recharts graph, and due-date tracking.
+- **Invoice OCR & Unified Analysis:** One-shot Gemini Vision API call for extraction, classification, duplicate checking, and prioritization.
+- **Vendor Analytics:** Aggregate total spend and risk profiles.
+- **Accounts Receivable Workflow:** Overdue tracking and customer risk assessments.
+- **AI Email Generation:** Dynamic prompt tuning for Friendly, Second, and Final notices.
+- **Full API:** Documented REST endpoints with graceful error handling.
+
+---
+
+## Tech Stack
 
 | Layer | Tech |
 |-------|------|
-| Frontend | React + Vite, vanilla CSS (custom design tokens), Material Icons SVG |
+| Frontend | React + Vite, TailwindCSS, Recharts |
 | Backend | FastAPI, SQLite, Pydantic, Uvicorn |
-| AI | Google GenAI SDK (`google.genai`), Gemini multimodal models |
-| DevOps | npm scripts, `npm run dev`, `uvicorn backend/app/main:app --reload` |
+| AI | Google GenAI SDK (`google.genai`), Gemini 1.5 Flash / 2.5 Flash |
+| Infrastructure | Standalone local dev, easily containerizable |
 
 ---
 
-### Setup Instructions
+## Setup Instructions
 
 1. **Clone the repository** (already published).
 2. **Backend**:
@@ -72,60 +71,53 @@ flowchart TD
    python3 -m venv venv
    source venv/bin/activate
    pip install -r requirements.txt
-   # .env should contain GEMINI_API_KEY (already configured)
+   # .env should contain GEMINI_API_KEY
    uvicorn app.main:app --reload
    ```
-3. **Frontend**:
+3. **Seed Database (Optional but recommended)**:
    ```bash
-   cd ../frontend
+   # From project root
+   backend/venv/bin/python scripts/seed_data.py
+   ```
+4. **Frontend**:
+   ```bash
+   # In a new terminal
    npm install
    npm run dev   # Vite dev server on http://localhost:5173
    ```
-4. Open the UI, upload an invoice, and watch the dashboard update.
+5. Open the UI, click "Sync ERP Data" on the Receivables page, and view the populated Dashboard.
 
 ---
 
-### API Endpoints
+## Sample Data Assets
 
+- `scripts/seed_data.py` - Clears and populates `finance.db` with realistic historical and future data.
+- `sample_invoices.json` - Static sample dataset.
+- `sample_receivables.json` - Static sample dataset.
+
+---
+
+## API Endpoints
+
+### Dashboard
 | Method | Path | Description |
 |--------|------|-------------|
-| `GET` | `/health` | Health check |
-| `POST` | `/invoice/upload` | Upload invoice file (multipart) |
-| `GET` | `/invoice/{id}/extract` | Return extracted data |
-| `GET` | `/invoice/{id}/classify` | Vendor classification |
-| `GET` | `/invoice/{id}/priority` | Priority score & recommendation |
-| `POST` | `/receivable/upload` | Bulk upload receivables CSV |
-| `GET` | `/receivable/{id}/priority` | Receivable priority |
-| `GET` | `/receivable/{id}/email` | Generate reminder email |
-| `POST` | `/email/generate` | Custom email generation |
+| `GET` | `/dashboard/metrics` | Summary metrics for invoices |
+| `GET` | `/dashboard/cashflow` | 30-day cashflow grouping |
+| `GET` | `/dashboard/vendors` | Aggregate vendor analytics |
 
----
+### Invoice
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/invoice` | List all invoices |
+| `POST` | `/invoice/analyze` | Unified AI processing |
 
-### Screenshots
-
-*(Placeholders – replace with actual screenshots after running the demo)*
-
-![Invoice Upload UI](file:///Users/harshit/.gemini/antigravity/brain/138692f6-8337-41a6-93c0-59fdd67b5fc5/screenshot_invoice_upload.png)
-
-![Dashboard Card Layout](file:///Users/harshit/.gemini/antigravity/brain/138692f6-8337-41a6-93c0-59fdd67b5fc5/screenshot_dashboard.png)
-
----
-
-### Future Improvements
-
-- Add **authentication/role‑based access**.
-- Integrate with **ERP systems** (SAP, NetSuite).
-- Expand to **cash‑flow forecasting**.
-- Implement **AI‑driven payment scheduling**.
-- Deploy to **cloud** with CI/CD pipelines.
-
----
-
-### OCR Notes
-
-- The code attempts to use the **first multimodal model** from the GenAI SDK (`google.genai`).
-- If no API key is present or no suitable model is found, a **deterministic mock** based on file‑path hash is returned (ensuring different invoices produce different data).
-- Logs clearly indicate whether real OCR was used or the fallback.
+### Receivable
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/receivable` | List all receivables |
+| `POST` | `/receivable/mock_sync` | Sync 10 mock records |
+| `GET` | `/receivable/{id}/email` | Generate reminder email (params: `reminder_type`) |
 
 ---
 

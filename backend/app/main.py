@@ -6,7 +6,7 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import invoice, receivable
+from .routers import invoice, receivable, dashboard
 from .database import engine, Base
 from . import models
 
@@ -24,6 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(dashboard.router, prefix="/dashboard", tags=["Dashboard"])
 app.include_router(invoice.router, prefix="/invoice", tags=["Invoice"])
 app.include_router(receivable.router, prefix="/receivable", tags=["Receivable"])
 
