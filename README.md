@@ -121,4 +121,3 @@ flowchart TD
 
 ---
 
-*Generated with Antigravity AI assistant.*
